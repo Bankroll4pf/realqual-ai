@@ -38,14 +38,19 @@ export function validateLeadInput(payload: unknown): ValidationResult<LeadInput>
   if (data.fullName.length < 2) errors.fullName = "Enter the lead's full name.";
   if (!emailPattern.test(data.email)) errors.email = "Enter a valid email address.";
   if (data.phone.replace(/\D/g, "").length < 7) errors.phone = "Enter a valid phone number.";
-  if (!isOneOf(data.leadType, leadTypes)) errors.leadType = "Select a valid lead type.";
+  const leadType = data.leadType;
+  const timeline = data.timeline;
+  const preApprovalStatus = data.preApprovalStatus;
+  const workingWithAgent = data.workingWithAgent;
+
+  if (!isOneOf(leadType, leadTypes)) errors.leadType = "Select a valid lead type.";
   if (data.targetArea.length < 2) errors.targetArea = "Enter a target city or area.";
   if (data.budgetOrValue.length < 2) errors.budgetOrValue = "Enter a budget or estimated value.";
-  if (!isOneOf(data.timeline, timelines)) errors.timeline = "Select a valid timeline.";
-  if (!isOneOf(data.preApprovalStatus, preApprovalStatuses)) {
+  if (!isOneOf(timeline, timelines)) errors.timeline = "Select a valid timeline.";
+  if (!isOneOf(preApprovalStatus, preApprovalStatuses)) {
     errors.preApprovalStatus = "Select a valid pre-approval status.";
   }
-  if (!isOneOf(data.workingWithAgent, agentStatuses)) {
+  if (!isOneOf(workingWithAgent, agentStatuses)) {
     errors.workingWithAgent = "Select whether they are working with an agent.";
   }
   if (data.notes.length > 2000) errors.notes = "Notes must be under 2,000 characters.";
@@ -58,12 +63,12 @@ export function validateLeadInput(payload: unknown): ValidationResult<LeadInput>
       fullName: data.fullName,
       email: data.email,
       phone: data.phone,
-      leadType: data.leadType,
+      leadType: leadType as LeadInput["leadType"],
       targetArea: data.targetArea,
       budgetOrValue: data.budgetOrValue,
-      timeline: data.timeline,
-      preApprovalStatus: data.preApprovalStatus,
-      workingWithAgent: data.workingWithAgent,
+      timeline: timeline as LeadInput["timeline"],
+      preApprovalStatus: preApprovalStatus as LeadInput["preApprovalStatus"],
+      workingWithAgent: workingWithAgent as LeadInput["workingWithAgent"],
       notes: data.notes
     }
   };
