@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RealQual AI Prototype</title>
+    <style>
+      :root {
+        --bg: #f5f7fa;
+        --ink: #172026;
+        --muted: #66737d;
+        --line: #dce5ea;
+        --brand: #0f766e;
+        --brand-dark: #115e59;
+        --red: #c2410c;
+        --gold: #b7791f;
+        --blue: #2563eb;
+        --card: #fff;
+        --shadow: 0 18px 48px rgba(23, 32, 38, 0.12);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      main {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 22px 0;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 900;
+      }
+      .mark {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border-radius: 8px;
+        background: var(--brand);
+        color: #fff;
+      }
+      .button {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 11px 15px;
+        background: #fff;
+        color: var(--ink);
+        font-weight: 850;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .button.primary {
+        border-color: var(--brand);
+        background: var(--brand);
+        color: #fff;
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 410px;
+        gap: 28px;
+        padding: 38px 0 26px;
+        align-items: stretch;
+      }
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--brand-dark);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(42px, 6vw, 72px);
+        line-height: 0.96;
+      }
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      .hero p:not(.eyebrow),
+      .muted {
+        color: var(--muted);
+        line-height: 1.58;
+      }
+      .hero-copy {
+        display: grid;
+        align-content: center;
+        gap: 20px;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .card,
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--card);
+        box-shadow: var(--shadow);
+      }
+      .card {
+        padding: 22px;
+      }
+      .signal-list {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+      .signal {
+        display: grid;
+        grid-template-columns: 60px 1fr;
+        gap: 14px;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+      }
+      .score {
+        display: grid;
+        width: 56px;
+        height: 56px;
+        place-items: center;
+        border-radius: 50%;
+        color: #fff;
+        font-weight: 900;
+      }
+      .hot {
+        background: var(--red);
+      }
+      .warm {
+        background: var(--gold);
+      }
+      .cold {
+        background: var(--blue);
+      }
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(360px, 0.95fr) minmax(360px, 1.05fr);
+        gap: 22px;
+        padding: 24px 0 56px;
+      }
+      .panel {
+        padding: 22px;
+      }
+      form {
+        display: grid;
+        gap: 14px;
+        margin-top: 18px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      label {
+        display: grid;
+        gap: 7px;
+        color: #40505a;
+        font-size: 13px;
+        font-weight: 850;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        min-width: 0;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 11px 12px;
+        background: #fbfcfd;
+        color: var(--ink);
+        font: inherit;
+      }
+      textarea {
+        resize: vertical;
+      }
+      .result {
+        display: grid;
+        gap: 14px;
+      }
+      .result-top {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 18px;
+        align-items: center;
+      }
+      .ring {
+        display: grid;
+        width: 116px;
+        height: 116px;
+        place-items: center;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 34px;
+        font-weight: 950;
+      }
+      .rows {
+        display: grid;
+        gap: 10px;
+      }
+      .row {
+        border-top: 1px solid var(--line);
+        padding-top: 10px;
+      }
+      .row strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+      .notice {
+        margin-top: 14px;
+        border: 1px solid #bbf7d0;
+        border-radius: 8px;
+        padding: 12px;
+        background: #f0fdf4;
+        color: #166534;
+      }
+      @media (max-width: 940px) {
+        .hero,
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 620px) {
+        header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .grid,
+        .result-top {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="brand"><span class="mark">RQ</span><span>RealQual AI</span></div>
+        <div class="actions">
+          <a class="button" href="#dashboard">Dashboard Preview</a>
+          <a class="button primary" href="#intake">Qualify Lead</a>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Real estate lead qualification assistant</p>
+          <h1>Turn inbound leads into compliant sales next steps.</h1>
+          <p>
+            This prototype shows the MVP flow: capture lead context, score urgency and readiness, summarize intent,
+            and produce a next action plus an agent-ready message.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="#intake">Try prototype</a>
+            <a class="button" href="#dashboard">See dashboard</a>
+          </div>
+        </div>
+        <aside class="card">
+          <p class="eyebrow">Pipeline preview</p>
+          <h2>AI-ranked lead queue</h2>
+          <div class="signal-list">
+            <div class="signal">
+              <span class="score hot">91</span>
+              <div><strong>Hot seller</strong><p class="muted">Ready this month. Book listing consult.</p></div>
+            </div>
+            <div class="signal">
+              <span class="score warm">68</span>
+              <div><strong>Warm buyer</strong><p class="muted">Needs financing confirmation.</p></div>
+            </div>
+            <div class="signal">
+              <span class="score cold">34</span>
+              <div><strong>Cold renter</strong><p class="muted">Longer timeline. Nurture sequence.</p></div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="workspace" id="intake">
+        <section class="panel">
+          <p class="eyebrow">Lead intake</p>
+          <h2>Qualify a new lead</h2>
+          <form id="leadForm">
+            <div class="grid">
+              <label>Full name <input name="fullName" value="Avery Morgan" /></label>
+              <label>Email <input name="email" value="avery@example.com" /></label>
+              <label>Phone <input name="phone" value="512-555-0184" /></label>
+              <label>Lead type
+                <select name="leadType">
+                  <option value="buyer">buyer</option>
+                  <option value="seller">seller</option>
+                  <option value="renter">renter</option>
+                  <option value="investor">investor</option>
+                </select>
+              </label>
+              <label>Target city / area <input name="targetArea" value="Austin, TX" /></label>
+              <label>Budget or value <input name="budgetOrValue" value="$725,000" /></label>
+              <label>Timeline
+                <select name="timeline">
+                  <option>immediate</option>
+                  <option selected>0-30 days</option>
+                  <option>31-90 days</option>
+                  <option>3-6 months</option>
+                  <option>6+ months</option>
+                </select>
+              </label>
+              <label>Pre-approval
+                <select name="preApprovalStatus">
+                  <option selected>pre-approved</option>
+                  <option>not yet</option>
+                  <option>cash buyer</option>
+                  <option>unknown</option>
+                </select>
+              </label>
+              <label>Working with agent
+                <select name="workingWithAgent">
+                  <option>yes</option>
+                  <option selected>no</option>
+                  <option>unknown</option>
+                </select>
+              </label>
+            </div>
+            <label>Notes
+              <textarea name="notes" rows="5">Relocating for work, wants private showings this weekend, clear neighborhood interest, and already has lender pre-approval.</textarea>
+            </label>
+            <button class="button primary" type="submit">Qualify lead</button>
+          </form>
+          <div class="notice">Prototype preview only. The production Next.js API and Supabase/OpenAI code are in the workspace.</div>
+        </section>
+
+        <section class="panel result">
+          <p class="eyebrow">Qualification output</p>
+          <div class="result-top">
+            <div class="ring hot" id="score">91</div>
+            <div>
+              <h2 id="temperature">Hot buyer lead</h2>
+              <p class="muted" id="summary">Avery is a buyer lead for Austin with a near-term timeline, clear budget, and pre-approval.</p>
+            </div>
+          </div>
+          <div class="rows">
+            <div class="row"><strong>Reasoning</strong><span id="reasoning">High readiness due to timeline, financing, clear location interest, and responsiveness signals.</span></div>
+            <div class="row"><strong>Recommended next action</strong><span id="action">Call within five minutes and book a showing consultation.</span></div>
+            <div class="row"><strong>Agent message</strong><span id="message">Thanks for reaching out. I can help you compare options in Austin and set up a focused next step based on your timeline.</span></div>
+            <div class="row"><strong>Compliance</strong><span>Scoring uses only business-relevant factors and excludes protected characteristics.</span></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel" id="dashboard" style="margin-bottom: 56px;">
+        <p class="eyebrow">Dashboard preview</p>
+        <h2>Qualified leads table</h2>
+        <p class="muted" style="margin-top: 8px;">The production Next.js dashboard lists saved leads with score, status, summary, reasoning, next action, and agent message.</p>
+      </section>
+    </main>
+
+    <script>
+      const form = document.querySelector("#leadForm");
+      const score = document.querySelector("#score");
+      const temperature = document.querySelector("#temperature");
+      const summary = document.querySelector("#summary");
+      const reasoning = document.querySelector("#reasoning");
+      const action = document.querySelector("#action");
+      const message = document.querySelector("#message");
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const data = Object.fromEntries(new FormData(form).entries());
+        let points = 35;
+        if (data.timeline === "immediate") points += 30;
+        if (data.timeline === "0-30 days") points += 24;
+        if (data.timeline === "31-90 days") points += 12;
+        if (data.preApprovalStatus === "pre-approved" || data.preApprovalStatus === "cash buyer") points += 22;
+        if (data.workingWithAgent === "no") points += 10;
+        if (String(data.notes).length > 60) points += 8;
+        points = Math.min(100, points);
+
+        const temp = points >= 78 ? "hot" : points >= 55 ? "warm" : "cold";
+        score.textContent = points;
+        score.className = "ring " + temp;
+        temperature.textContent = `${temp[0].toUpperCase() + temp.slice(1)} ${data.leadType} lead`;
+        summary.textContent = `${data.fullName} is a ${data.leadType} lead interested in ${data.targetArea} with a ${data.timeline} timeline and ${data.preApprovalStatus} financing status.`;
+        reasoning.textContent = "Scored from intent, timeline, budget/value clarity, location interest, financing readiness, agent status, and clarity of needs.";
+        action.textContent = temp === "hot" ? "Call now and schedule the most relevant consultation." : temp === "warm" ? "Send a personalized message and schedule discovery." : "Add to nurture and ask one clarifying question.";
+        message.textContent = `Thanks for reaching out, ${String(data.fullName).split(" ")[0] || "there"}. I can help you think through options in ${data.targetArea} and plan the right next step.`;
+      });
+    </script>
+  </body>
+</html>
